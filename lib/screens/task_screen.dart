@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:note_clone/blocs/bloc/task_state.dart';
 import 'package:note_clone/models/tasks_model.dart';
+import 'package:note_clone/screens/add_task_screen.dart';
 import 'package:note_clone/widgets/task_list.dart';
 import '../blocs/bloc_exports.dart';
 
 class TaskScreen extends StatelessWidget {
-  TaskScreen({Key? key}) : super(key: key);
+  const TaskScreen({Key? key}) : super(key: key);
 
-  TextEditingController titleController = TextEditingController();
+  
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,12 @@ class TaskScreen extends StatelessWidget {
         List<TaskModel> taskList = state.allTask;
         return Scaffold(
           appBar: AppBar(
-            title: Text('Note Clone'),
+            title: const Text('Note Clone'),
+          actions: [
+            IconButton(onPressed: (){
+               addTask(context);
+            }, icon: const Icon(Icons.add, color: Colors.white,),),
+          ],
           ),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -44,32 +51,18 @@ class TaskScreen extends StatelessWidget {
   }
 
   void addTask(BuildContext context) {
-    showBottomSheet(
+    showModalBottomSheet(
       context: context,
       builder: (context) => SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
-          child: Column(
-            children: [
-              const Text(
-                'Add Task',
-                style: TextStyle(
-                  fontSize: 24,
-                ),
-              ),
-              TextField(
-                controller: titleController,
-                decoration: const InputDecoration(
-                  label: Text('Title'),
-                  border: OutlineInputBorder(),
-                ),
-              )
-            ],
-          ),
+          child: AddTaskWidget(),
         ),
       ),
     );
   }
 }
+
+

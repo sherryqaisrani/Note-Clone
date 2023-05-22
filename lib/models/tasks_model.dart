@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+// ignore: must_be_immutable
 class TaskModel extends Equatable {
   String title;
   bool? isDone;
@@ -42,6 +43,6 @@ class TaskModel extends Equatable {
   }
 
   @override
-  // TODO: implement props
+  
   List<Object?> get props => [title, isDone, isDelete];
 }
