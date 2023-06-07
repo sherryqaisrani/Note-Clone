@@ -1,5 +1,3 @@
-import 'package:note_clone/blocs/bloc/task_state.dart';
-
 import '../bloc_exports.dart';
 
 import 'package:equatable/equatable.dart';
@@ -12,12 +10,18 @@ class TaskBloc extends HydratedBloc<TaskEvent, TaskState> {
     on<AddTaskEvent>(_addTask);
     on<UpdateTaskEvent>(_updateTask);
     on<DeleteTaskEvent>(_deleteTask);
+    on<RemoveTaskEvent>(_removeTask);
   }
 
   void _addTask(AddTaskEvent event, Emitter<TaskState> state) {
     final state = this.state;
     // ignore: invalid_use_of_visible_for_testing_member
-    emit(TaskState(allTask: List.from(state.allTask)..add(event.task)));
+    emit(
+      TaskState(
+        allTask: List.from(state.allTask)..add(event.task),
+        removeTask: state.removeTask,
+      ),
+    );
   }
 
   void _updateTask(UpdateTaskEvent event, Emitter<TaskState> state) {
@@ -29,7 +33,7 @@ class TaskBloc extends HydratedBloc<TaskEvent, TaskState> {
         ? allTasks.insert(index, task.copyWith(isDone: true))
         : allTasks.insert(index, task.copyWith(isDone: false));
     // ignore: invalid_use_of_visible_for_testing_member
-    emit(TaskState(allTask: allTasks));
+    emit(TaskState(allTask: allTasks, removeTask: state.removeTask));
   }
 
   void _deleteTask(DeleteTaskEvent event, Emitter<TaskState> state) {
@@ -37,20 +41,35 @@ class TaskBloc extends HydratedBloc<TaskEvent, TaskState> {
     // ignore: invalid_use_of_visible_for_testing_member
     emit(
       TaskState(
-        allTask: List.from(state.allTask)..remove(event.task),
+        allTask: state.allTask,
+        removeTask: List.from(state.removeTask)..remove(event.task),
       ),
     );
   }
-  
+
+  void _removeTask(RemoveTaskEvent event, Emitter<TaskState> state) {
+    final state = this.state;
+    // ignore: invalid_use_of_visible_for_testing_member
+    emit(
+      TaskState(
+        allTask: List.from(state.allTask)..remove(event.task),
+        removeTask: List.from(state.allTask)
+          ..add(
+            event.task.copyWith(
+              isDelete: true,
+            ),
+          ),
+      ),
+    );
+  }
+
   @override
   TaskState? fromJson(Map<String, dynamic> json) {
     return TaskState.fromMap(json);
   }
-  
+
   @override
   Map<String, dynamic>? toJson(TaskState state) {
-    state.toMap();
-    return null;
+    return state.toMap();
   }
-  
 }

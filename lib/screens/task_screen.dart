@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:note_clone/blocs/bloc/task_state.dart';
 import 'package:note_clone/models/tasks_model.dart';
 import 'package:note_clone/screens/add_task_screen.dart';
+import 'package:note_clone/widgets/task_drawer.dart';
 import 'package:note_clone/widgets/task_list.dart';
 import '../blocs/bloc_exports.dart';
 
 class TaskScreen extends StatelessWidget {
   const TaskScreen({Key? key}) : super(key: key);
-
-  
-
+  static const id = 'task_screen';
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TaskBloc, TaskState>(
@@ -18,19 +17,26 @@ class TaskScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: const Text('Note Clone'),
-          actions: [
-            IconButton(onPressed: (){
-               addTask(context);
-            }, icon: const Icon(Icons.add, color: Colors.white,),),
-          ],
+            actions: [
+              IconButton(
+                onPressed: () {
+                  addTask(context);
+                },
+                icon: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
+          drawer: TaskDrawer(),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Center(
+              Center(
                 child: Chip(
                     label: Text(
-                  'Tasks',
+                  '${taskList.length} : Tasks',
                 )),
               ),
               TaskList(taskList: taskList)
@@ -64,5 +70,3 @@ class TaskScreen extends StatelessWidget {
     );
   }
 }
-
-
