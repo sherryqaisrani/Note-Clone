@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:note_clone/blocs/bloc/task_state.dart';
 import 'package:note_clone/models/tasks_model.dart';
 import 'package:note_clone/screens/add_task_screen.dart';
 import 'package:note_clone/widgets/task_drawer.dart';

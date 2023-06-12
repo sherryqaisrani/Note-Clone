@@ -31,10 +31,13 @@ class TaskList extends StatelessWidget {
               ),
             ),
             trailing: Checkbox(
-                value: task.isDone,
-                onChanged: (value) {
-                  context.read<TaskBloc>().add(UpdateTaskEvent(task: task));
-                }),
+              value: task.isDone,
+              onChanged: task.isDelete == false
+                  ? (value) {
+                      context.read<TaskBloc>().add(UpdateTaskEvent(task: task));
+                    }
+                  : null,
+            ),
             onLongPress: () => _removeOrDeleteTask(context, task),
           );
         },

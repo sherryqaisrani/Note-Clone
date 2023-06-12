@@ -53,7 +53,7 @@ class TaskBloc extends HydratedBloc<TaskEvent, TaskState> {
     emit(
       TaskState(
         allTask: List.from(state.allTask)..remove(event.task),
-        removeTask: List.from(state.allTask)
+        removeTask: List.from(state.removeTask)
           ..add(
             event.task.copyWith(
               isDelete: true,
